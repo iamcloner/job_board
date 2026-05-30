@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 
+from bson import ObjectId
 from pydantic import BaseModel
 from pydantic import EmailStr
 from pydantic import Field
@@ -15,13 +16,14 @@ class UserCreate(UserLogin):
 
 class User(UserCreate):
     active: bool
-    created_at: datetime = Field(default_factory=datetime.now)
-    updated_at: datetime = Field(default_factory=datetime.now)
+    created_at: datetime = Field(default_factory=lambda :datetime.now(tz=timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda :datetime.now(tz=timezone.utc))
     class Config:
         arbitrary_types_allowed = True
 
 class UserShow(User):
-    password:str = "*******"
+    id:str
+    password: str = Field(exclude=True)
 
 class UserEdit(UserCreate):
     pass
