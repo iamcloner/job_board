@@ -1,24 +1,26 @@
-import datetime
+from datetime import datetime, timezone
 
 from pydantic import BaseModel
-from pydantic.v1 import EmailStr
+from pydantic import EmailStr
+from pydantic import Field
 
 
 class UserLogin(BaseModel):
-    username: str | EmailStr
+    username: str
     password: str
 
 class UserCreate(UserLogin):
     name: str
-    username: str
     email: str
 
 class User(UserCreate):
     active: bool
-    created_at: datetime = Field(default_factory=datetime.datetime.now(tz=datetime.timezone.utc))
-    updated_at: datetime = Field(default_factory=datetime.datetime.now(tz=datetime.timezone.utc))
+    created_at: datetime = Field(default_factory=datetime.now)
+    updated_at: datetime = Field(default_factory=datetime.now)
+    class Config:
+        arbitrary_types_allowed = True
 
-class ShowUser(User):
+class UserShow(User):
     password:str = "*******"
 
 class UserEdit(UserCreate):

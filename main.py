@@ -1,11 +1,7 @@
 from fastapi import FastAPI
 
-from app.database.database import db
+from app.api.v1.routers import router as api_router_v1
 
 app = FastAPI()
 
-@app.get("/")
-async def root():
-    await db.command("ping")
-
-    return {"message": "Mongo DB Connected"}
+app.include_router(api_router_v1,prefix="/v1")
