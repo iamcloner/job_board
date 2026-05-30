@@ -12,7 +12,7 @@ class UserLogin(BaseModel):
 
 class UserCreate(UserLogin):
     name: str
-    email: str
+    email: EmailStr
 
 class User(UserCreate):
     active: bool
@@ -29,7 +29,10 @@ class UserEdit(UserCreate):
     pass
 
 class UserPartialEdit(BaseModel):
-    name: str | None
-    username: str | None
-    email: EmailStr | None
-    password: str | None
+    name: str | None = None
+    username: str | None = None
+    email: EmailStr | None = None
+    password: str | None = None
+
+class UserFind(UserPartialEdit):
+    active: bool | None = None
