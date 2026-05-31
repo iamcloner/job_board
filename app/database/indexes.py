@@ -1,2 +1,6 @@
-indexes = [ ('users','email',{"unique":True}),
-            ('users','username',{"unique":True}),]
+indexes = {
+    "users": [
+        ("email", {"unique": True}),
+        ("username", {"unique": True}),
+    ]
+}
