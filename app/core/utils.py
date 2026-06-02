@@ -22,16 +22,17 @@ class JWTUtils:
     def decode(token:str,token_type:Literal["access_token","refresh_token"]="access_token") -> dict:
         payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
         if payload["type"] != token_type:
-            raise Exception(f"Invalid token type: {token_type}")
+            raise RuntimeError(f"Invalid token type: {token_type}")
         return ObjectId(payload["sub"])
     @staticmethod
     def encode(user_id:ObjectId,token_type:Literal["access_token","refresh_token"]="access_token") -> str:
         init_time = datetime.now(timezone.utc)
+        exp = timedelta(minutes=settings.JWT_ACCESS_EXP) if token_type == "access_token" else timedelta(minutes=settings.JWT_REFRESH_EXP)
         jwt_payload = {
             "iat": init_time,
             "sub": str(user_id),
             "type":token_type,
             "nbf": init_time,
-            "exp": init_time + timedelta(minutes=settings.JWT_ACCESS_EXP),
+            "exp": init_time + exp,
         }
         return jwt.encode(jwt_payload, settings.JWT_SECRET_KEY, algorithm="HS256")
