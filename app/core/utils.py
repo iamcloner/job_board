@@ -11,7 +11,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class PasswordUtils:
     @staticmethod
-    def hash(password:str) -> bool:
+    def hash(password:str) -> str:
         return pwd_context.hash(password)
     @staticmethod
     def verify(password:str,hashed_password:str) -> bool:
@@ -19,7 +19,7 @@ class PasswordUtils:
 
 class JWTUtils:
     @staticmethod
-    def decode(token:str,token_type:Literal["access_token","refresh_token"]="access_token") -> dict:
+    def decode(token:str,token_type:Literal["access_token","refresh_token"]="access_token") -> ObjectId:
         payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
         if payload["type"] != token_type:
             raise RuntimeError(f"Invalid token type: {token_type}")

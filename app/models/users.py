@@ -18,9 +18,14 @@ class User(UserCreate):
     class Config:
         arbitrary_types_allowed = True
 
-class UserShow(User):
+class UserShow(BaseModel):
     id:str
-    password: str = Field(exclude=True)
+    name: str
+    email: EmailStr
+    username: str
+    active: bool
+    created_at: datetime = Field(default_factory=lambda: datetime.now(tz=timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(tz=timezone.utc))
 
 class UserEdit(UserCreate):
     pass
