@@ -1,8 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Literal
 
 from bson import ObjectId
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class CreateCompany(BaseModel):
@@ -17,8 +17,8 @@ class CreateCompany(BaseModel):
 
 class Company(CreateCompany):
     is_active:bool = True
-    created_at:datetime = datetime.now()
-    updated_at:datetime = datetime.now()
+    created_at:datetime = Field(default_factory=lambda :datetime.now(tz=timezone.utc))
+    updated_at:datetime = Field(default_factory=lambda :datetime.now(tz=timezone.utc))
     owner_id:ObjectId
     class Config:
         arbitrary_types_allowed = True
