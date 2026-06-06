@@ -36,3 +36,11 @@ class JWTUtils:
             "exp": init_time + exp,
         }
         return jwt.encode(jwt_payload, settings.JWT_SECRET_KEY, algorithm="HS256")
+
+class ResponseUtils:
+    @staticmethod
+    def ObjectId_Serializer(obj:dict,field_name:str,response_field_name:str|None=None) -> dict:
+        if field_name not in obj:
+            raise IndexError(f"{field_name} is not exist")
+        obj[response_field_name if response_field_name else field_name] = str(obj.pop(field_name))
+        return obj

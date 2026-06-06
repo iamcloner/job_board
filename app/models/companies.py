@@ -23,6 +23,19 @@ class Company(CreateCompany):
     class Config:
         arbitrary_types_allowed = True
 
-class CompanyShow(Company):
+class CompanyList(BaseModel):
     id:str
+    name:str
+    created_at:datetime
+    is_active:bool
+    employee_count: Literal["1-10", "10-100", "100-1000", "+1000"]
     owner_id:str
+
+
+class CompanyShow(CompanyList):
+    description: str
+    website: str | None
+    location: str | None
+    logo_url: str | None
+    banner_url: str | None
+    updated_at: datetime
